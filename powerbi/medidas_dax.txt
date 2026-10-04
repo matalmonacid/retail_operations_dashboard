@@ -1,0 +1,50 @@
+Facturación Total =
+CALCULATE(
+    SUM(retail_operaciones_powerbi[Importe]),
+    retail_operaciones_powerbi[EsVentaValida] = TRUE()
+)
+
+Pedidos =
+CALCULATE(
+    DISTINCTCOUNT(retail_operaciones_powerbi[Factura]),
+    retail_operaciones_powerbi[EsVentaValida] = TRUE()
+)
+
+Unidades Vendidas =
+CALCULATE(
+    SUM(retail_operaciones_powerbi[Cantidad]),
+    retail_operaciones_powerbi[EsVentaValida] = TRUE()
+)
+
+Ticket Promedio =
+DIVIDE(
+    [Facturación Total],
+    [Pedidos],
+    0
+)
+
+Clientes Activos =
+CALCULATE(
+    DISTINCTCOUNT(retail_operaciones_powerbi[Cliente]),
+    retail_operaciones_powerbi[EsVentaValida] = TRUE(),
+    FILTER(
+        retail_operaciones_powerbi,
+        NOT(ISBLANK(retail_operaciones_powerbi[Cliente]))
+    )
+)
+
+Facturas Canceladas =
+CALCULATE(
+    DISTINCTCOUNT(retail_operaciones_powerbi[Factura]),
+    retail_operaciones_powerbi[EsCancelacion] = TRUE()
+)
+
+Facturas Totales =
+DISTINCTCOUNT(retail_operaciones_powerbi[Factura])
+
+Tasa de Cancelación =
+DIVIDE(
+    [Facturas Canceladas],
+    [Facturas Totales],
+    0
+)
